@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-    // Cuma izinin POST
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -10,8 +9,12 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Email dan password wajib' });
     }
 
-    const RESEND_API_KEY = 're_hpKyBTe6_KvfGUapgsiGZDsnk2FZ9jHV3';
-    const YOUR_EMAIL = 'medikaputra5@gmail.com';
+    const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    const YOUR_EMAIL = process.env.TO_EMAIL || 'medikaputra5@gmail.com';
+
+    if (!RESEND_API_KEY) {
+        return res.status(500).json({ error: 'API key belum diset' });
+    }
 
     try {
         const response = await fetch('https://api.resend.com/emails', {
