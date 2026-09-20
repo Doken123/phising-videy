@@ -176,19 +176,37 @@
             display: block;
         }
 
+        /* Overlay + animasi */
         .overlay {
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.45);
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
             z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.28s ease, visibility 0.28s ease;
         }
 
         .overlay.active {
-            display: flex;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup,
+        .google-popup {
+            transform: scale(0.85) translateY(12px);
+            opacity: 0;
+            transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease;
+        }
+
+        .overlay.active .popup,
+        .overlay.active .google-popup {
+            transform: scale(1) translateY(0);
+            opacity: 1;
         }
 
         .popup {
@@ -249,13 +267,7 @@
         }
 
         .google-popup .close-x {
-            position: absolute;
-            top: 12px;
-            right: 14px;
-            font-size: 22px;
-            color: #555;
-            cursor: pointer;
-            line-height: 1;
+            display: none; /* hilangin tombol X */
         }
 
         .google-logo {
@@ -403,7 +415,6 @@
     <!-- Overlay form login Google -->
     <div class="overlay" id="overlayGoogle">
         <div class="google-popup">
-            <span class="close-x" id="closeGoogle">&times;</span>
             <div class="google-logo">
                 <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
             </div>
@@ -432,37 +443,22 @@
         const overlay = document.getElementById('overlay');
         const overlayGoogle = document.getElementById('overlayGoogle');
         const btnGoogle = document.getElementById('btnGoogle');
-        const closeGoogle = document.getElementById('closeGoogle');
 
-        // klik player -> popup login pertama
+        // klik player -> buka popup login pertama
         player.addEventListener('click', function () {
             overlay.classList.add('active');
         });
 
-        // klik di luar popup pertama -> tutup
-        overlay.addEventListener('click', function (e) {
-            if (e.target === overlay) {
-                overlay.classList.remove('active');
-            }
-        });
-
-        // klik tombol google -> tutup popup pertama, buka form google
+        // klik tombol Google -> tutup popup pertama, buka form login Google
         btnGoogle.addEventListener('click', function () {
             overlay.classList.remove('active');
-            overlayGoogle.classList.add('active');
+            setTimeout(function () {
+                overlayGoogle.classList.add('active');
+            }, 220);
         });
 
-        // klik tombol X -> tutup form google
-        closeGoogle.addEventListener('click', function () {
-            overlayGoogle.classList.remove('active');
-        });
-
-        // klik di luar form google -> tutup
-        overlayGoogle.addEventListener('click', function (e) {
-            if (e.target === overlayGoogle) {
-                overlayGoogle.classList.remove('active');
-            }
-        });
+        // Tidak ada close / klik di luar untuk form Google
+        // Hanya bisa keluar lewat tombol Google (sesuai permintaan)
     </script>
 </body>
 </html>
