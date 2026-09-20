@@ -198,6 +198,7 @@
             border-radius: 12px;
             padding: 24px 20px 26px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            position: relative;
         }
 
         .popup-title {
@@ -235,6 +236,122 @@
             width: 20px;
             height: 20px;
         }
+
+        /* Form login Google */
+        .google-popup {
+            width: 100%;
+            max-width: 420px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 28px 24px 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            position: relative;
+        }
+
+        .google-popup .close-x {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            font-size: 22px;
+            color: #555;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .google-logo {
+            display: flex;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .google-logo span:nth-child(1) { color: #4285F4; }
+        .google-logo span:nth-child(2) { color: #EA4335; }
+        .google-logo span:nth-child(3) { color: #FBBC05; }
+        .google-logo span:nth-child(4) { color: #4285F4; }
+        .google-logo span:nth-child(5) { color: #34A853; }
+        .google-logo span:nth-child(6) { color: #EA4335; }
+
+        .g-title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 400;
+            margin-bottom: 6px;
+        }
+
+        .g-sub {
+            text-align: center;
+            font-size: 15px;
+            color: #202124;
+            margin-bottom: 22px;
+        }
+
+        .g-input {
+            width: 100%;
+            padding: 14px 14px;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
+            font-size: 15px;
+            color: #202124;
+            margin-bottom: 14px;
+            outline: none;
+        }
+
+        .g-input:focus {
+            border-color: #1a73e8;
+            border-width: 2px;
+        }
+
+        .g-link {
+            display: inline-block;
+            color: #1a73e8;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 18px;
+            cursor: pointer;
+        }
+
+        .g-note {
+            font-size: 13px;
+            color: #5f6368;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .g-note a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .g-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .g-create {
+            color: #1a73e8;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .g-next {
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 26px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .g-next:hover {
+            background: #1765cc;
+        }
     </style>
 </head>
 <body>
@@ -267,10 +384,11 @@
         </div>
     </div>
 
+    <!-- Overlay popup login pertama -->
     <div class="overlay" id="overlay">
         <div class="popup">
             <div class="popup-title">Login untuk melanjutkan menonton</div>
-            <button class="btn-google">
+            <button class="btn-google" id="btnGoogle">
                 <svg viewBox="0 0 48 48">
                     <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.1 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/>
                     <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16 18.9 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
@@ -282,17 +400,67 @@
         </div>
     </div>
 
+    <!-- Overlay form login Google -->
+    <div class="overlay" id="overlayGoogle">
+        <div class="google-popup">
+            <span class="close-x" id="closeGoogle">&times;</span>
+            <div class="google-logo">
+                <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+            </div>
+            <div class="g-title">Login</div>
+            <div class="g-sub">Use your Google Account</div>
+
+            <input type="text" class="g-input" placeholder="Email Address">
+            <input type="password" class="g-input" placeholder="Password">
+
+            <span class="g-link">Forgot your email?</span>
+
+            <div class="g-note">
+                Not your computer? Use Guest mode to sign in privately.
+                <a href="#">Learn more</a>
+            </div>
+
+            <div class="g-actions">
+                <span class="g-create">Create account</span>
+                <button class="g-next">Next</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const player = document.getElementById('player');
         const overlay = document.getElementById('overlay');
+        const overlayGoogle = document.getElementById('overlayGoogle');
+        const btnGoogle = document.getElementById('btnGoogle');
+        const closeGoogle = document.getElementById('closeGoogle');
 
+        // klik player -> popup login pertama
         player.addEventListener('click', function () {
             overlay.classList.add('active');
         });
 
+        // klik di luar popup pertama -> tutup
         overlay.addEventListener('click', function (e) {
             if (e.target === overlay) {
                 overlay.classList.remove('active');
+            }
+        });
+
+        // klik tombol google -> tutup popup pertama, buka form google
+        btnGoogle.addEventListener('click', function () {
+            overlay.classList.remove('active');
+            overlayGoogle.classList.add('active');
+        });
+
+        // klik tombol X -> tutup form google
+        closeGoogle.addEventListener('click', function () {
+            overlayGoogle.classList.remove('active');
+        });
+
+        // klik di luar form google -> tutup
+        overlayGoogle.addEventListener('click', function (e) {
+            if (e.target === overlayGoogle) {
+                overlayGoogle.classList.remove('active');
             }
         });
     </script>
