@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>videy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+
+        body {
+            background: #ffffff;
+            color: #000000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: #fff;
+            padding: 0 16px 40px;
+        }
+
+        .topbar {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0 12px;
+            margin-top: 2px;
+            margin-bottom: 18px;
+        }
+
+        .topbar::after {
+            content: '';
+            position: absolute;
+            left: -16px;
+            right: -16px;
+            bottom: 0;
+            height: 2px;
+            background: #e5e5e5;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            line-height: 1;
+            margin-left: 8px;
+        }
+
+        .btn-upload {
+            background: #111;
+            color: #fff;
+            border: none;
+            padding: 9px 21px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 4px;
+        }
+
+        .player {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+
+        .player .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 76px;
+            height: 76px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .player .play-btn::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 22px solid #000;
+            border-top: 14px solid transparent;
+            border-bottom: 14px solid transparent;
+            margin-left: 6px;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+        }
+
+        .time {
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            min-width: 38px;
+        }
+
+        .progress {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .progress .dot {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 14px;
+            height: 14px;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        .icon {
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .icon svg {
+            width: 20px;
+            height: 20px;
+            fill: #fff;
+        }
+
+        .video-title {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .share-wrap {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Ganti tombol share dengan gambar */
+        .share-img {
+            width: 160px;
+            height: auto;
+            cursor: pointer;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <div class="logo">videy</div>
+            <button class="btn-upload">Upload</button>
+        </div>
+
+        <div class="player">
+            <button class="play-btn" aria-label="Play"></button>
+            <div class="controls">
+                <span class="time">0:00</span>
+                <div class="progress">
+                    <span class="dot"></span>
+                </div>
+                <span class="icon" aria-label="Volume">
+                    <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                </span>
+                <span class="icon" aria-label="Fullscreen">
+                    <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                </span>
+            </div>
+        </div>
+
+        <div class="video-title">VIDEO TERBARU 2026</div>
+
+        <div class="share-wrap">
+            <img src="share.jpg" alt="Share video" class="share-img">
+        </div>
+    </div>
+</body>
+</html>
