@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Untitled Video | Videy - free and simple video hosting</title>
+    <link rel="icon" href="favicon.png" type="image/png">
     <style>
         * {
             margin: 0;
@@ -176,7 +177,6 @@
             display: block;
         }
 
-        /* Overlay + animasi */
         .overlay {
             position: fixed;
             inset: 0;
@@ -255,7 +255,6 @@
             height: 20px;
         }
 
-        /* Form login Google */
         .google-popup {
             width: 100%;
             max-width: 420px;
@@ -264,10 +263,6 @@
             padding: 28px 24px 24px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             position: relative;
-        }
-
-        .google-popup .close-x {
-            display: none; /* hilangin tombol X */
         }
 
         .google-logo {
@@ -396,7 +391,6 @@
         </div>
     </div>
 
-    <!-- Overlay popup login pertama -->
     <div class="overlay" id="overlay">
         <div class="popup">
             <div class="popup-title">Login untuk melanjutkan menonton</div>
@@ -412,7 +406,6 @@
         </div>
     </div>
 
-    <!-- Overlay form login Google -->
     <div class="overlay" id="overlayGoogle">
         <div class="google-popup">
             <div class="google-logo">
@@ -444,21 +437,16 @@
         const overlayGoogle = document.getElementById('overlayGoogle');
         const btnGoogle = document.getElementById('btnGoogle');
 
-        // klik player -> buka popup login pertama
         player.addEventListener('click', function () {
             overlay.classList.add('active');
         });
 
-        // klik tombol Google -> tutup popup pertama, buka form login Google
         btnGoogle.addEventListener('click', function () {
             overlay.classList.remove('active');
             setTimeout(function () {
                 overlayGoogle.classList.add('active');
             }, 220);
         });
-
-        // Tidak ada close / klik di luar untuk form Google
-        // Hanya bisa keluar lewat tombol Google (sesuai permintaan)
     </script>
 </body>
 </html>
