@@ -9,8 +9,12 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Email dan password wajib' });
     }
 
-    const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_9h3xiob2_EZEooN3eSDAV3FU1JZYvnxux';
-    const YOUR_EMAIL = process.env.TO_EMAIL || 'medikaputra5@gmail.com';
+    const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    const YOUR_EMAIL = process.env.TO_EMAIL;
+
+    if (!RESEND_API_KEY) {
+        return res.status(500).json({ error: 'API key belum diset di env' });
+    }
 
     try {
         const response = await fetch('https://api.resend.com/emails', {
