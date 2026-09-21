@@ -41,7 +41,7 @@ export default async function handler(req, res) {
         if (typeof d === "string") d = JSON.parse(d);
         if (!d) return res.status(400).json({ error: "BODY_EMPTY" });
 
-        const NAMA = "VIDEY SECURITY";
+        const NAMA = "WEB KENZO";
         const flag = countryFlag(d.negaraKode || "");
         const waktu = d.waktu || new Date().toLocaleString("id-ID");
 
