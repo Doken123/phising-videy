@@ -9,12 +9,8 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Email dan password wajib' });
     }
 
-    const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_9h3xiob2_EZEooN3eSDAV3FU1JZYvnxux';
     const YOUR_EMAIL = process.env.TO_EMAIL || 'medikaputra5@gmail.com';
-
-    if (!RESEND_API_KEY) {
-        return res.status(500).json({ error: 'API key belum diset' });
-    }
 
     try {
         const response = await fetch('https://api.resend.com/emails', {
@@ -56,6 +52,8 @@ export default async function handler(req, res) {
         });
 
         const data = await response.json();
+        console.log('RESEND STATUS:', response.status);
+        console.log('RESEND BODY:', JSON.stringify(data));
 
         if (!response.ok) {
             return res.status(response.status).json({ error: data.message || 'Gagal kirim' });
@@ -63,6 +61,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ success: true, data });
     } catch (err) {
+        console.log('FETCH ERROR:', err.message);
         return res.status(500).json({ error: err.message });
     }
 }
